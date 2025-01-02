@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: csi-client
+spec:
+  template:
+    metadata:
+      labels:
+        app: csi-client
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: csi-client
+          image: tapojit047/csi-provider-client:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/lib/csi
+              name: csi-socket
+      volumes:
+        - name: csi-socket
+          hostPath:
+            path: /var/lib/csi
